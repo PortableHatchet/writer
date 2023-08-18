@@ -15,7 +15,23 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        DashboardModel dashboardData = new DashboardModel
+        {
+            AverageWordsPerDay = CalculateAverageWordsPerDay(10000, 7),
+            WordsWrittenToday = GetWordsWrittenToday(),
+            MaxWordsPerDay = 1000 // Set your desired max word count per day
+        };
+        return View(dashboardData);
+    }
+    private double CalculateAverageWordsPerDay(int num1, int num2)
+    {
+        double AverageWordsPerDay = num1 / num2;
+        return AverageWordsPerDay;
+    }
+    private int GetWordsWrittenToday()
+    {
+        int wordsWritten = 300;
+        return wordsWritten; 
     }
 
     public IActionResult Privacy()
