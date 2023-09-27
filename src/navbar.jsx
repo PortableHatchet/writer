@@ -1,24 +1,35 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import './Navbar.css'
 
 
 function Navbar() {
+
+  //const [isMinimized, setIsMinimized] = useState(false);
+
+  //const toggleNavbar = () => {
+    //setIsMinimized(!isMinimized);
+
   return (
-    <nav>
+    <div className={`navbar`}>
+      <button>
+      </button>
       <ul>
         <li>
-          <Link to="/">Dashboard</Link>
+          <NavLink to="/">
+            Dashboard
+          </NavLink>
         </li>
         <li>
-          <Link to="/wordprocessor">WordProcessor</Link>
+          <NavLink to="/WordProcessor">Word Processor</NavLink>
         </li>
         <li>
-          <Link to="/info">Information</Link>
+          <NavLink to="/Information">Information</NavLink>
         </li>
       </ul>
-    </nav>
+    </div>
   );
 }
+
 
 export default Navbar;

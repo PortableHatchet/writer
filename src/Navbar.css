@@ -1,0 +1,36 @@
+.navbar{
+    width: 250px; /* Set the initial width for the left sidebar */
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  color: white;
+  transition: width 0.3s ease;
+}
+.navbar.minimized {
+    width: 60px; /* Set the width when minimized */
+  }
+  
+  .navbar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .navbar ul li {
+    padding: 0px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 2px solid #333;
+    
+  }
+  .navbar ul li a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: burlywood;
+    transition: background-color 0.3s ease; /* Add a smooth background color transition */
+  }
+  .navbar ul li a:hover {
+    background-color: #333; /* Change this to your desired hover background color */
+  }

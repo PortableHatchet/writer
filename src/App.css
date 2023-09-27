@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  display: flex;
+
 }
 
 .App-logo {
@@ -14,7 +16,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: black;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -27,6 +29,19 @@
 .App-link {
   color: #61dafb;
 }
+
+.content {
+  flex-grow: 1;
+  transition: padding-left 0.3s ease;
+  padding-left: 275px;
+}
+
+.content-minimized {
+  padding-left: 60px; /* Adjust to match the minimized navbar width */
+  
+}
+
+
 
 @keyframes App-logo-spin {
   from {
