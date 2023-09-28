@@ -4,20 +4,9 @@ function WordProcessor() {
   const [content, setContent] = useState('');
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
+  const [customFilename, setCustomFilename] = useState('document.txt'); // Default filename
+
   const textAreaRef = useRef(null);
-
-  const applyFormatting = (formatting) => {
-    const textarea = textAreaRef.current;
-    const startPos = textarea.selectionStart;
-    const endPos = textarea.selectionEnd;
-    const text = textarea.value;
-
-    const formattedText = text.substring(0, startPos) + formatting + text.substring(startPos, endPos) + text.substring(endPos);
-
-    setContent(formattedText);
-    textarea.focus();
-    textarea.setSelectionRange(startPos, endPos + formatting.length);
-  };
 
   const handleContentChange = (e) => {
     const newContent = e.target.value;
@@ -25,25 +14,6 @@ function WordProcessor() {
     setRedoStack([]); // Clear redo stack when content changes
     setContent(newContent);
   };
-
-  const handleBold = () => {
-    applyFormatting('**Bold Text**');
-  };
-
-  const handleItalic = () => {
-    applyFormatting('*Italic Text*');
-  };
-
-  const handleUnderline = () => {
-    applyFormatting('__Underlined Text__');
-  };
-
-  
-
-    
-
-  
-
 
   const handleUndo = () => {
     if (undoStack.length > 0) {
@@ -60,6 +30,45 @@ function WordProcessor() {
       setContent(newContent);
     }
   };
+  
+  const extractPlainTextFromRTF = (rtfContent) => {
+    // Use a regular expression to remove RTF formatting
+    const plainText = rtfContent.replace(/\\[^{}]+{[^{}]*}/g, '');
+    return plainText;
+  };
+
+  const handleCustomFilenameChange = (e) => {
+    setCustomFilename(e.target.value);
+  };
+
+  const handleFileUpload = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const fileContent = e.target.result;
+        const plainTextContent = extractPlainTextFromRTF(fileContent);
+        // Set the content of the textarea to the extracted plain text
+        setContent(plainTextContent);
+      };
+      reader.readAsText(selectedFile);
+    }
+  };
+  const handleDownload = () => {
+    const blob = new Blob([content], { type: 'text/plain' });
+
+    const url = URL.createObjectURL(blob);
+
+    const anchor = document.createElement('a');
+    anchor.href = url;
+
+    anchor.download = customFilename;
+
+    anchor.click();
+
+    URL.revokeObjectURL(url);
+  };
+  
 
   return (
     <div>
@@ -74,13 +83,20 @@ function WordProcessor() {
       />
       {/* You can add more formatting and editing features here */}
       <div>
-        <button onClick={handleBold}>Bold</button>
-        <button onClick={handleItalic}>Italic</button>
-        <button onClick={handleUnderline}>Underline</button>
-      </div>
-      <div>
         <button onClick={handleUndo}>Undo</button>
         <button onClick={handleRedo}>Redo</button>
+      </div>
+      <div>
+        <input type="file" onChange={handleFileUpload} />
+        <div>
+        <input
+          type="text"
+          value={customFilename}
+          onChange={handleCustomFilenameChange}
+          placeholder="Enter custom filename"
+        />
+        <button onClick={handleDownload}>Download</button>
+      </div>
       </div>
     </div>
   );
