@@ -15,6 +15,44 @@ function WordProcessor() {
     setContent(newContent);
   };
 
+  const handleInput = (e) => {
+    const { value, selectionStart, selectionEnd } = e.target;
+  
+    if (e.key === '"') {
+      e.preventDefault();
+  
+      // Insert both opening and closing double-quotes
+      const newText = value.slice(0, selectionStart) + '""' + value.slice(selectionEnd);
+  
+      // Update the textarea content
+      setContent(newText);
+  
+      // Set the cursor position between the double quotes
+      const newPosition = selectionStart + 1;
+  
+      // Use setTimeout to ensure cursor positioning after the content update
+      setTimeout(() => {
+        textAreaRef.current.selectionStart = newPosition;
+        textAreaRef.current.selectionEnd = newPosition;
+      });
+    }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+  
+      // Insert a tab character (or any desired indentation) for a new paragraph
+      const newText =
+        value.slice(0, selectionStart) + '\n\t' + value.slice(selectionEnd);
+  
+      // Update the textarea content
+      setContent(newText);
+  
+      // Set the cursor position after the inserted tab character
+      const newPosition = selectionStart + 2; // Adjust for the added tab
+      textAreaRef.current.selectionStart = newPosition;
+      textAreaRef.current.selectionEnd = newPosition;
+    }
+  };
+
   const handleUndo = () => {
     if (undoStack.length > 0) {
       const newContent = undoStack.pop();
@@ -77,6 +115,7 @@ function WordProcessor() {
         ref={textAreaRef}
         value={content}
         onChange={handleContentChange}
+        onKeyDown={handleInput} // Listen to keydown event for input
         placeholder="Start typing..."
         rows={10}
         cols={50}
