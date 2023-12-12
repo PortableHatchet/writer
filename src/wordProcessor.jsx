@@ -16,42 +16,52 @@ function WordProcessor() {
   };
 
   const handleInput = (e) => {
-    const { value, selectionStart, selectionEnd } = e.target;
+    const { value, selectionStart } = e.target;
   
     if (e.key === '"') {
+      // Insert double quotes as before
       e.preventDefault();
-  
-      // Insert both opening and closing double-quotes
-      const newText = value.slice(0, selectionStart) + '""' + value.slice(selectionEnd);
-  
-      // Update the textarea content
+      const newText = value.slice(0, selectionStart) + '""' + value.slice(selectionStart);
       setContent(newText);
-  
-      // Set the cursor position between the double quotes
       const newPosition = selectionStart + 1;
-  
-      // Use setTimeout to ensure cursor positioning after the content update
       setTimeout(() => {
         textAreaRef.current.selectionStart = newPosition;
         textAreaRef.current.selectionEnd = newPosition;
       });
-    }
-    else if (e.key === 'Enter') {
+    } else if (e.key === 'Enter') {
+      // Insert a tab character for a new paragraph
       e.preventDefault();
-  
-      // Insert a tab character (or any desired indentation) for a new paragraph
       const newText =
-        value.slice(0, selectionStart) + '\n\t' + value.slice(selectionEnd);
-  
-      // Update the textarea content
+        value.slice(0, selectionStart) + '\n\t' + value.slice(selectionStart);
       setContent(newText);
-  
-      // Set the cursor position after the inserted tab character
-      const newPosition = selectionStart + 2; // Adjust for the added tab
+      const newPosition = selectionStart + 2;
       textAreaRef.current.selectionStart = newPosition;
       textAreaRef.current.selectionEnd = newPosition;
+    } else {
+      // Check for auto-capitalization after a period, question mark, or exclamation mark
+      const prevChar = value.charAt(selectionStart - 1);
+      if (/[.!?]\s/.test(prevChar)) {
+        e.preventDefault();
+  
+        // Capitalize the current word
+        const currentWord = value.slice(selectionStart, selectionStart + 1).toUpperCase();
+  
+        // Replace the current word in the textarea
+        const newText = value.slice(0, selectionStart) + currentWord + value.slice(selectionStart + 1);
+        setContent(newText);
+  
+        // Set the cursor position after the capitalized word
+        const newPosition = selectionStart + 1;
+        textAreaRef.current.selectionStart = newPosition;
+        textAreaRef.current.selectionEnd = newPosition;
+      }
     }
   };
+  
+  
+  
+  
+  
 
   const handleUndo = () => {
     if (undoStack.length > 0) {
