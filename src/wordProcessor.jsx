@@ -1,18 +1,25 @@
 import React, { useState, useRef } from 'react';
+import { useMinimized } from './MinimizedContext';
+import './WordProcessor.css'; // Import your CSS file
+
 
 function WordProcessor() {
   const [content, setContent] = useState('');
   const [undoStack, setUndoStack] = useState([]);
   const [redoStack, setRedoStack] = useState([]);
   const [customFilename, setCustomFilename] = useState('document.txt'); // Default filename
-
+  const [totalWordCount, setTotalWordCount] = useState(0);
+  const [sessionWordCount, setSessionWordCount] = useState(0);
   const textAreaRef = useRef(null);
+  const { isMinimized } = useMinimized();
 
   const handleContentChange = (e) => {
     const newContent = e.target.value;
     setUndoStack([...undoStack, content]);
     setRedoStack([]); // Clear redo stack when content changes
     setContent(newContent);
+    const wordsInCurrentContent = newContent.split(/\s+/).filter(word => word !== '');
+    setSessionWordCount(wordsInCurrentContent.length);
   };
 
   const handleInput = (e) => {
@@ -57,12 +64,6 @@ function WordProcessor() {
       }
     }
   };
-  
-  
-  
-  
-  
-
   const handleUndo = () => {
     if (undoStack.length > 0) {
       const newContent = undoStack.pop();
@@ -95,9 +96,8 @@ function WordProcessor() {
       const reader = new FileReader();
       reader.onload = function (e) {
         const fileContent = e.target.result;
-        const plainTextContent = extractPlainTextFromRTF(fileContent);
-        // Set the content of the textarea to the extracted plain text
-        setContent(plainTextContent);
+        // Set the content of the textarea to the file's plain text content
+        setContent(fileContent);
       };
       reader.readAsText(selectedFile);
     }
@@ -117,10 +117,9 @@ function WordProcessor() {
     URL.revokeObjectURL(url);
   };
   
-
   return (
-    <div>
-      <h1>Word Processor</h1>
+    <div className={`word-processor-container ${isMinimized ? 'minimized' : ''}`}>
+    <h1>Word Processor</h1>
       <textarea
         ref={textAreaRef}
         value={content}
@@ -146,6 +145,9 @@ function WordProcessor() {
         />
         <button onClick={handleDownload}>Download</button>
       </div>
+      </div>
+      <div style={{ marginTop: '10px' }}>
+        <p>Word Count: {sessionWordCount}</p>
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css'; // Import your CSS file
+import { useMinimized } from './MinimizedContext';
 
 function Dashboard() {
   // State for user information
+  const { isMinimized } = useMinimized();
   const [name, setName] = useState(localStorage.getItem('user_name') || '');
   const [projectName, setProjectName] = useState(localStorage.getItem('project_name') || '');
   const [goal, setGoal] = useState(100); // Default goal
@@ -35,7 +37,8 @@ function Dashboard() {
   const percentage = (progress / goal) * 100;
 
   return (
-    <div className="dashboard-container">
+    
+    <div className={`dashboard-container ${isMinimized ? 'minimized' : ''}`}>
       <h1>Dashboard</h1>
       {/* Basic Information */}
       <div className="section">

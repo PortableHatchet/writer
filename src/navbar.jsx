@@ -1,22 +1,20 @@
-import React, { useState } from "react";
+// Navbar.js
+import React from "react";
 import { NavLink } from 'react-router-dom';
 import './Navbar.css';
+import { useMinimized } from './MinimizedContext'; // Adjust the path accordingly
 
 function Navbar() {
-  const [isMinimized, setIsMinimized] = useState(false);
-
-  const toggleNavbar = () => {
-    setIsMinimized(!isMinimized);
-  };
+  const { isMinimized, toggleMinimized } = useMinimized();
 
   return (
     <div className={`navbar ${isMinimized ? 'minimized' : ''}`}>
-      <button onClick={toggleNavbar}>
+      <button onClick={toggleMinimized}>
         <img src="/keyboard.png" alt="Logo" />
       </button>
       <ul>
         <li>
-          <NavLink to="/" title="   Dashboard">
+          <NavLink to="/" title="Dashboard">
             <img
               src="/histogram.png"
               alt="Dashboard Icon"

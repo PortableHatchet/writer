@@ -1,0 +1,66 @@
+/* WordProcessor.css */
+
+.word-processor-container {
+    margin: 20px;
+    padding: 20px;
+    border: 2px solid #333;
+    background-color: #fff;
+    transition: margin-left 0.3s ease;
+    margin-left: 25%; /* Add 25px left margin */
+  margin-right: 25%;
+    z-index: 2; /* Increase the z-index to ensure it's above the Navbar */
+  }
+  
+  .word-processor-container.minimized {
+    margin-left: 60px;
+    z-index: 2; /* Increase the z-index for the minimized state */
+  }
+  
+  .word-processor-container h1 {
+    color: #333;
+  }
+  
+  .word-processor-container textarea {
+    width: calc(100% - 50px); /* Subtract 50px for 25px margins on each side */
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-left: 25px; /* Add 25px left margin */
+    margin-right: 25px; /* Add 25px right margin */
+  }
+  
+  .word-processor-container div {
+    margin: 10px 0;
+  }
+  
+  .word-processor-container button {
+    padding: 10px;
+    margin: 0 5px;
+    font-size: 14px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .word-processor-container button:hover {
+    background-color: #555;
+  }
+  
+  .word-processor-container input {
+    padding: 10px;
+    margin: 0 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .word-processor-container p {
+    font-size: 14px;
+    color: #333;
+    margin-top: 10px;
+  }
+  

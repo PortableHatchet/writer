@@ -33,4 +33,6 @@
     background-color: #A4C3B2;
     border-radius: 4px;
   }
-  
+  .dashboard-container.minimized {
+    margin-left: 60px; /* Adjust this value to match the minimized Navbar width */
+  }
